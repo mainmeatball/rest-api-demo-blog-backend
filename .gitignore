@@ -1,11 +1,11 @@
 HELP.md
 target/
 .mvn
-/src/main/resources/application.properties
 !**/src/main/**
 !**/src/test/**
 mvnw.cmd
 mvnw
+/src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
 .idea

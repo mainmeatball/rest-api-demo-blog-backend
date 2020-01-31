@@ -1,44 +1,44 @@
 package com.example.helloblog.service;
 
-import com.example.helloblog.dao.MessageDAO;
 import com.example.helloblog.entity.Message;
+import com.example.helloblog.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MessageServiceImpl implements MessageService {
 
-    private MessageDAO messageDAO;
+    private MessageRepository messageRepository;
 
     @Autowired
-    public MessageServiceImpl(MessageDAO messageDAO) {
-        this.messageDAO = messageDAO;
+    public MessageServiceImpl(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
     }
 
     @Override
-    @Transactional
     public List<Message> findAll() {
-        return messageDAO.findAll();
+        return messageRepository.findAll();
     }
 
     @Override
-    @Transactional
     public Message findById(int id) {
-        return messageDAO.findById(id);
+        Optional<Message> message = messageRepository.findById(id);
+        if (!message.isPresent()) {
+            throw new RuntimeException("Did not find message if - " + id);
+        }
+        return message.get();
     }
 
     @Override
-    @Transactional
     public void save(Message message) {
-        messageDAO.save(message);
+        messageRepository.save(message);
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
-        messageDAO.deleteById(id);
+        messageRepository.deleteById(id);
     }
 }
