@@ -6,5 +6,11 @@ import java.util.List;
 
 public interface MessageDAO {
 
-    public List<Message> findAll();
+    List<Message> findAll();
+
+    Message findById(int id);
+
+    void save(Message message);
+
+    void deleteById(int id);
 }
