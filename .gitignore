@@ -4,6 +4,8 @@ target/
 /src/main/resources/application.properties
 !**/src/main/**
 !**/src/test/**
+mvnw.cmd
+mvnw
 
 ### IntelliJ IDEA ###
 .idea
