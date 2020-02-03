@@ -1,5 +1,7 @@
 package com.example.helloblog.entity;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -20,6 +22,10 @@ public class Message {
 
     @Column(name="likes")
     private int likes;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Message() {
     }
@@ -59,6 +65,28 @@ public class Message {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        User user = new User();
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+    }
+
+    public void upvote() {
+        this.likes++;
+    }
+
+    public void downvote() {
+        this.likes--;
     }
 
     @Override
