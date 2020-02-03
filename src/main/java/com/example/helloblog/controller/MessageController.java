@@ -3,17 +3,20 @@ package com.example.helloblog.controller;
 import com.example.helloblog.entity.Message;
 import com.example.helloblog.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-public class MessageRestController {
+public class MessageController {
 
     private MessageService messageService;
 
     @Autowired
-    public MessageRestController(MessageService messageService) {
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
@@ -26,7 +29,7 @@ public class MessageRestController {
     public Message getMessage(@PathVariable int messageId) {
         Message message = messageService.findById(messageId);
         if (message == null) {
-            throw new RuntimeException("Message id not found " + messageId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message with id " + messageId + " is not found.");
         }
         return message;
     }
@@ -44,12 +47,28 @@ public class MessageRestController {
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public String deleteMessage(@PathVariable int messageId) {
+    public ResponseEntity<String> deleteMessage(@PathVariable int messageId) {
         Message message = messageService.findById(messageId);
         if (message == null) {
-            throw new RuntimeException("Message id not found - " + messageId);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message with id " + messageId + " is not found.");
         }
         messageService.deleteById(messageId);
-        return "Deleted message with id = " + messageId;
+        return ResponseEntity.ok("Message with id " + messageId + " was successfully deleted.");
+    }
+
+    @PutMapping("/messages/{messageId}/upvote")
+    public Message upvoteMessage(@PathVariable int messageId) {
+        Message message = messageService.findById(messageId);
+        message.upvote();
+        messageService.save(message);
+        return message;
+    }
+
+    @PutMapping("/messages/{messageId}/downvote")
+    public Message dwonvoteMessage(@PathVariable int messageId) {
+        Message message = messageService.findById(messageId);
+        message.downvote();
+        messageService.save(message);
+        return message;
     }
 }
