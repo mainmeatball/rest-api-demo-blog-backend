@@ -34,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/sign_up", "/login").permitAll()
+                // delete "messages**" ant when stop testing
+                //.antMatchers("/sign_up", "/login", "/messages**").permitAll()
+                .antMatchers("**").permitAll()
                 .anyRequest().authenticated()
                 .and()
 //            .formLogin()
