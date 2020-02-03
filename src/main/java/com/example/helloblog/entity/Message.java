@@ -30,11 +30,6 @@ public class Message {
     public Message() {
     }
 
-    public Message(LocalDateTime localDateTime, String content) {
-        this.localDateTime = localDateTime;
-        this.content = content;
-    }
-
     public int getId() {
         return id;
     }
@@ -73,12 +68,6 @@ public class Message {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public void setUserDetails(UserDetails userDetails) {
-        User user = new User();
-        user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
     }
 
     public void upvote() {
