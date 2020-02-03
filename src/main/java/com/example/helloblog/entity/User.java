@@ -3,6 +3,7 @@ package com.example.helloblog.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name="users")
 public class User {
@@ -21,6 +22,10 @@ public class User {
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<Message> messages;
 
     public User() {
     }
