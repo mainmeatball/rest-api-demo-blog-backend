@@ -17,7 +17,7 @@ public class MessageRestController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/messages")
+    @GetMapping(value={"/", "/messages"})
     public List<Message> show() {
         return messageService.findAll();
     }
