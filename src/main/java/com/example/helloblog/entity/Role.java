@@ -1,5 +1,7 @@
 package com.example.helloblog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ public class Role {
     @Column(name = "role_name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private Set<User> users;
 
