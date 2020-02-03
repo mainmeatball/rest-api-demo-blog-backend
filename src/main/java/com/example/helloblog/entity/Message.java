@@ -1,10 +1,10 @@
 package com.example.helloblog.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
-@Entity(name="message")
+@Entity(name="messages")
 public class Message {
 
     @Id
@@ -12,17 +12,20 @@ public class Message {
     @Column(name="id")
     private int id;
 
-    @Column(name="date")
-    private Date date;
+    @Column(name="local_date_time")
+    private LocalDateTime localDateTime;
 
     @Column(name="content")
     private String content;
 
+    @Column(name="likes")
+    private int likes;
+
     public Message() {
     }
 
-    public Message(Date date, String content) {
-        this.date = date;
+    public Message(LocalDateTime localDateTime, String content) {
+        this.localDateTime = localDateTime;
         this.content = content;
     }
 
@@ -34,12 +37,12 @@ public class Message {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public String getContent() {
@@ -50,12 +53,21 @@ public class Message {
         this.content = text;
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", date=" + date +
+                ", localDateTime=" + localDateTime +
                 ", content='" + content + '\'' +
+                ", likes=" + likes +
                 '}';
     }
 }
