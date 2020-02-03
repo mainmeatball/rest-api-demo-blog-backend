@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
     public Message findById(int id) {
         Optional<Message> message = messageRepository.findById(id);
         if (!message.isPresent()) {
-            throw new RuntimeException("Did not find message if - " + id);
+            throw new RuntimeException("Did not find message id - " + id);
         }
         return message.get();
     }
