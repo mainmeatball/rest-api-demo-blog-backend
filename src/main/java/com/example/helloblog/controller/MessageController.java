@@ -75,9 +75,5 @@ public class MessageController {
         return message;
     }
 
-    // TODO: implement sorting and pagination
-
-    // TODO: implement /admin special endpoint to manage everything
-
     // TODO: implement Permissions with roles
 }

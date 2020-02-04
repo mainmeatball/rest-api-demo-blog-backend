@@ -1,14 +1,11 @@
 package com.example.helloblog.controller;
 
-import com.example.helloblog.dto.SignUpDto;
+import com.example.helloblog.dto.UserDto;
 import com.example.helloblog.entity.User;
 import com.example.helloblog.service.SecurityService;
 import com.example.helloblog.service.UserDetailsServiceImpl;
 import com.example.helloblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,15 +25,9 @@ public class UserController {
     }
 
     @PostMapping("/sign_up")
-    public User signUp(@RequestBody SignUpDto signUpDto) {
-        User user = userService.signUp(signUpDto);
-        securityService.autoLogin(signUpDto.getUsername(), signUpDto.getPassword());
+    public User signUp(@RequestBody UserDto userDto) {
+        User user = userService.save(userDto);
+        securityService.autoLogin(userDto.getUsername(), userDto.getPassword());
         return user;
-    }
-
-    // just for a test check which user is logged in
-    @GetMapping("/who_am_i")
-    public UserDetails whoAmI() {
-        return userDetailsService.getCurrentUser();
     }
 }
