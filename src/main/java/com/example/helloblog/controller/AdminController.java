@@ -3,6 +3,7 @@ package com.example.helloblog.controller;
 import com.example.helloblog.dto.UserDto;
 import com.example.helloblog.entity.Message;
 import com.example.helloblog.entity.User;
+import com.example.helloblog.service.MessageService;
 import com.example.helloblog.service.UserDetailsServiceImpl;
 import com.example.helloblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class AdminController {
 
     private UserDetailsServiceImpl userDetailsService;
     private UserService userService;
+    private MessageService messageService;
 
     @Autowired
-    public AdminController(UserService userService, UserDetailsServiceImpl userDetailsService) {
-        this.userService = userService;
+    public AdminController(UserDetailsServiceImpl userDetailsService, UserService userService, MessageService messageService) {
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
+        this.messageService = messageService;
     }
 
     @GetMapping("/users")
@@ -40,19 +43,30 @@ public class AdminController {
         return userService.findById(userId);
     }
 
-    @PutMapping("/users")
-    public User updateUser(@RequestBody UserDto user) {
-        return userService.save(user);
+    @PutMapping("/users/{userId}")
+    public User updateUser(@PathVariable int userId, @RequestBody UserDto userdto) {
+        User user = userService.findById(userId);
+        return userService.update(user, userdto);
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteMessage(@PathVariable int userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         User user = userService.findById(userId);
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " is not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " was not found.");
         }
         userService.deleteById(userId);
         return ResponseEntity.ok("User with id " + userId + " was successfully deleted.");
+    }
+
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity<String> deleteMessage(@PathVariable int messageId) {
+        Message message = messageService.findById(messageId);
+        if (message == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message with id " + messageId + " was not found.");
+        }
+        messageService.deleteById(messageId);
+        return ResponseEntity.ok("Message with id " + messageId + " was successfully deleted.");
     }
 
     // just for a test check which user is logged in
