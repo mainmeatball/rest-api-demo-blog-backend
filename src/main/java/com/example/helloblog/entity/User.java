@@ -26,7 +26,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Message> messages;
 
     public User() {

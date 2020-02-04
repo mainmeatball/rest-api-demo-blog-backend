@@ -1,5 +1,7 @@
 package com.example.helloblog.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.*;

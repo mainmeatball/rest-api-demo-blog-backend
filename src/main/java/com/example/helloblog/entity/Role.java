@@ -7,9 +7,11 @@ import java.util.Set;
 
 @Entity(name="roles")
 public class Role {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
+    @JsonIgnore
     private int id;
 
     @Column(name = "role_name")
