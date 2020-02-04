@@ -74,6 +74,4 @@ public class MessageController {
         messageService.save(message);
         return message;
     }
-
-    // TODO: implement Permissions with roles
 }
