@@ -1,6 +1,8 @@
 package com.example.helloblog.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -23,8 +25,8 @@ public class User {
     @JoinColumn(name="role_id")
     private Role role;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<Message> messages;
 
     public User() {
