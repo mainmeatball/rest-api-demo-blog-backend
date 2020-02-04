@@ -1,7 +1,7 @@
 package com.example.helloblog.service;
 
-import com.example.helloblog.dto.SignUpDto;
-import com.example.helloblog.entity.Message;
+import com.example.helloblog.dto.UserDto;
+import com.example.helloblog.entity.Role;
 import com.example.helloblog.entity.User;
 import com.example.helloblog.repository.RoleRepository;
 import com.example.helloblog.repository.UserRepository;
@@ -10,10 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,11 +47,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUp(SignUpDto signUpDto) {
+    public User findById(int userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " is not found.");
+        }
+        return user.get();
+    }
+
+    @Override
+    public void deleteById(int userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User save(UserDto userDto) {
         User user = new User();
-        user.setUsername(signUpDto.getUsername());
-        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole(roleRepository.findByName("ROLE_USER"));
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User update(User user, UserDto userDto) {
+        if (userDto.getUsername() != null) {
+            user.setUsername(userDto.getUsername());
+        }
+        if (userDto.getRole() != null) {
+            Role role = roleRepository.findByName(userDto.getRole().getName());
+            user.setRole(role);
+        }
         userRepository.save(user);
         return user;
     }
