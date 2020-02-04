@@ -34,14 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-                // delete "messages**" ant when stop testing
-                //.antMatchers("/sign_up", "/login", "/messages**").permitAll()
-                .antMatchers("**").permitAll()
+                .antMatchers("/admin**").hasRole("ADMIN")
+                .antMatchers("/messages**", "/sign_up").permitAll()
                 .anyRequest().authenticated()
                 .and()
-//            .formLogin()
-//                .loginProcessingUrl("/login").permitAll()
-//                .and()
+            .formLogin()
+                .loginProcessingUrl("/login").permitAll()
+                .and()
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .logout()
                 .permitAll();
