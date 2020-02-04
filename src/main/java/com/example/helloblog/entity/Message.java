@@ -1,7 +1,5 @@
 package com.example.helloblog.entity;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 
 import javax.persistence.*;

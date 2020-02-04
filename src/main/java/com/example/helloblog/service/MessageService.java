@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MessageService {
 
-    List<Message> findAll();
+    List<Message> findAll(int pageNo, int pageSize, String sortBy, String dir);
 
     Message findById(int id);
 

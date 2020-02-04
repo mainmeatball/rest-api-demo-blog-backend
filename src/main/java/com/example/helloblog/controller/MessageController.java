@@ -21,8 +21,11 @@ public class MessageController {
     }
 
     @GetMapping(value={"/", "/messages"})
-    public List<Message> show() {
-        return messageService.findAll();
+    public List<Message> show(@RequestParam(defaultValue = "0") int pageNo,
+                              @RequestParam(defaultValue = "100") int pageSize,
+                              @RequestParam(defaultValue = "id") String sortBy,
+                              @RequestParam(defaultValue = "asc") String dir) {
+        return messageService.findAll(pageNo, pageSize, sortBy, dir);
     }
 
     @GetMapping("/messages/{messageId}")
@@ -71,4 +74,10 @@ public class MessageController {
         messageService.save(message);
         return message;
     }
+
+    // TODO: implement sorting and pagination
+
+    // TODO: implement /admin special endpoint to manage everything
+
+    // TODO: implement Permissions with roles
 }

@@ -4,6 +4,10 @@ import com.example.helloblog.entity.Message;
 import com.example.helloblog.repository.MessageRepository;
 import com.example.helloblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -27,8 +31,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> findAll() {
-        return messageRepository.findAll();
+    public List<Message> findAll(int pageNo, int pageSize, String sortBy, String dir) {
+        Sort sort = dir.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+        Page<Message> pagedResult = messageRepository.findAll(paging);
+        if (pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return null;
+        }
     }
 
     @Override
