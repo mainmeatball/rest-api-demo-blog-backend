@@ -2,11 +2,13 @@ package com.example.helloblog.dto;
 
 import com.example.helloblog.entity.Role;
 
+import java.util.Set;
+
 public class UserDto {
 
     private String username;
     private String password;
-    private Role role;
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -24,11 +26,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
