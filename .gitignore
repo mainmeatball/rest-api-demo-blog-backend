@@ -5,6 +5,7 @@ target/
 !**/src/test/**
 mvnw.cmd
 mvnw
+/src/main/resources/META-INF/additional-spring-configuration-metadata.json
 /src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
