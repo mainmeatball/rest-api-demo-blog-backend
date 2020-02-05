@@ -15,8 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,7 +67,12 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(roleRepository.findByName("ROLE_USER"));
+        Set<Role> roles = new HashSet<>();
+        if (userDto.getUsername().equals("admin")) {
+            roles.add(roleRepository.findByName("ROLE_ADMIN"));
+        }
+        roles.add(roleRepository.findByName("ROLE_USER"));
+        user.setRoles(roles);
         userRepository.save(user);
         return user;
     }
@@ -75,9 +82,12 @@ public class UserServiceImpl implements UserService {
         if (userDto.getUsername() != null) {
             user.setUsername(userDto.getUsername());
         }
-        if (userDto.getRole() != null) {
-            Role role = roleRepository.findByName(userDto.getRole().getName());
-            user.setRole(role);
+        Set<Role> roles;
+        if ((roles = userDto.getRoles()) != null) {
+            for (Role role: roles) {
+                roles.add(roleRepository.findByName(role.getName()));
+            }
+            user.setRoles(roles);
         }
         userRepository.save(user);
         return user;
