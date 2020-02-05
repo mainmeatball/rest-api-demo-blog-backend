@@ -1,6 +1,9 @@
 package com.example.helloblog.config;
 
+import com.example.helloblog.config.jwt.JwtConfigurer;
+import com.example.helloblog.config.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,42 +11,39 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private UserDetailsService userDetailsService;
+    private TokenProvider tokenProvider;
 
-    @Bean
-    AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter();
-        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
+    @Autowired
+    public SecurityConfig(UserDetailsService userDetailsService, TokenProvider tokenProvider) {
+        this.userDetailsService = userDetailsService;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/admin**").hasRole("ADMIN")
-                .antMatchers("/messages**", "/sign_up").permitAll()
+                .antMatchers("/login", "/sign_up").permitAll()
+                .antMatchers("/", "/messages**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers("/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
-            .formLogin()
-                .loginProcessingUrl("/login").permitAll()
-                .and()
-                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .logout()
-                .permitAll();
+            .apply(securityConfigurerAdapter());
     }
 
     @Bean
@@ -51,9 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager customAuthenticationManager() throws Exception {
-        return authenticationManager();
+    private JwtConfigurer securityConfigurerAdapter() {
+        return new JwtConfigurer(tokenProvider);
     }
 
     @Autowired
