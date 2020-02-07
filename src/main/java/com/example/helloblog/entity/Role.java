@@ -3,6 +3,7 @@ package com.example.helloblog.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity(name="roles")
@@ -15,6 +16,7 @@ public class Role {
     private int id;
 
     @Column(name = "role_name")
+    @NotNull
     private String name;
 
     @JsonIgnore

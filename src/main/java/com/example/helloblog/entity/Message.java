@@ -1,10 +1,9 @@
 package com.example.helloblog.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity(name="messages")
 public class Message {
@@ -15,9 +14,11 @@ public class Message {
     private int id;
 
     @Column(name="local_date_time")
+    @NotNull
     private LocalDateTime localDateTime;
 
     @Column(name="content")
+    @NotNull
     private String content;
 
     @Column(name="likes")
@@ -25,6 +26,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @NotNull
     private User user;
 
     public Message() {

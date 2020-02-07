@@ -1,8 +1,11 @@
 package com.example.helloblog.entity;
 
+import com.example.helloblog.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity(name="users")
@@ -14,9 +17,13 @@ public class User {
     private int id;
 
     @Column(unique = true)
+    @NotNull
+//    @Size(min = 6, max = 20)
     private String username;
 
     @JsonIgnore
+    @NotNull
+//    @Size(min = 6, max = 20)
     private String password;
 
     @ManyToMany
@@ -24,6 +31,7 @@ public class User {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @NotNull
     private Set<Role> roles;
 
     @JsonIgnore
@@ -31,6 +39,12 @@ public class User {
     private Set<Message> messages;
 
     public User() {
+    }
+
+    public User(String username, String password, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
