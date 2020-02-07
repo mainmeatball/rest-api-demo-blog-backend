@@ -1,4 +1,4 @@
-package com.example.helloblog.config.jwt;
+package com.example.helloblog.security.config.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

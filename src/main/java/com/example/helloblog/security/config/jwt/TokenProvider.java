@@ -1,4 +1,4 @@
-package com.example.helloblog.config.jwt;
+package com.example.helloblog.security.config.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

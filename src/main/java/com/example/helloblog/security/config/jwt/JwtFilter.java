@@ -1,4 +1,4 @@
-package com.example.helloblog.config.jwt;
+package com.example.helloblog.security.config.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
