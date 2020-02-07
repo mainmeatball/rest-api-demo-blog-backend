@@ -1,14 +1,14 @@
 package com.example.helloblog.dto;
 
-import com.example.helloblog.entity.Role;
-
-import java.util.Set;
+import com.example.helloblog.controller.validator.ValidPassword;
+import com.example.helloblog.controller.validator.ValidUsername;
 
 public class UserDto {
 
+    @ValidUsername
     private String username;
+    @ValidPassword
     private String password;
-    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -24,13 +24,5 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }
