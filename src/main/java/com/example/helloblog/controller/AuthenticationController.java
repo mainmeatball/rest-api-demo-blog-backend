@@ -1,8 +1,12 @@
 package com.example.helloblog.controller;
 
-import com.example.helloblog.config.jwt.JwtFilter;
-import com.example.helloblog.config.jwt.TokenProvider;
-import com.example.helloblog.dto.LoginDto;
+import com.example.helloblog.controller.validator.UsernameValidator;
+import com.example.helloblog.security.config.jwt.JwtFilter;
+import com.example.helloblog.security.config.jwt.TokenProvider;
+import com.example.helloblog.dto.UserDto;
+import com.example.helloblog.entity.User;
+import com.example.helloblog.security.SecurityUtils;
+import com.example.helloblog.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,10 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -23,49 +25,56 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     private final TokenProvider tokenProvider;
-
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserService userService;
 
     @Autowired
-    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public AuthenticationController(TokenProvider tokenProvider,
+                                    AuthenticationManagerBuilder authenticationManagerBuilder,
+                                    UserService userService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.userService = userService;
+    }
+
+    @PostMapping("/sign_up")
+    public User signUp(@Valid @RequestBody UserDto userDto) {
+        return userService.save(userDto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginDto loginDto) {
-
+    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody UserDto userDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
+                new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = tokenProvider.createToken(authentication);
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
+    // just for a test check which user is logged in
+    @GetMapping("/who")
+    public String whoAmI() {
+        String username = SecurityUtils.getCurrentUsername();
+        if (username == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not authorized.");
+        }
+        return username;
+    }
+
     static class JWTToken {
-
         private String idToken;
-
         JWTToken(String idToken) {
             this.idToken = idToken;
         }
-
         @JsonProperty("id_token")
         String getIdToken() {
             return idToken;
         }
-
         void setIdToken(String idToken) {
             this.idToken = idToken;
         }
     }
-
 }
