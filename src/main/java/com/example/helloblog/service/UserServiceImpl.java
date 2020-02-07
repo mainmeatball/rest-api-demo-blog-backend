@@ -1,5 +1,6 @@
 package com.example.helloblog.service;
 
+import com.example.helloblog.dto.RolesDto;
 import com.example.helloblog.dto.UserDto;
 import com.example.helloblog.entity.Role;
 import com.example.helloblog.entity.User;
@@ -15,18 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-
     private RoleRepository roleRepository;
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -64,31 +61,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Set<Role> roles = new HashSet<>();
         if (userDto.getUsername().equals("admin")) {
             roles.add(roleRepository.findByName("ROLE_ADMIN"));
         }
         roles.add(roleRepository.findByName("ROLE_USER"));
-        user.setRoles(roles);
+        User user = new User(userDto.getUsername(),
+                passwordEncoder.encode(userDto.getPassword()),
+                roles);
         userRepository.save(user);
         return user;
     }
 
     @Override
     public User update(User user, UserDto userDto) {
-        if (userDto.getUsername() != null) {
-            user.setUsername(userDto.getUsername());
-        }
-        Set<Role> roles;
-        if ((roles = userDto.getRoles()) != null) {
-            for (Role role: roles) {
-                roles.add(roleRepository.findByName(role.getName()));
-            }
-            user.setRoles(roles);
-        }
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User updateRoles(User user, RolesDto rolesDto) {
+        user.setRoles(rolesDto.getNames().stream().map(role -> roleRepository.findByName(role)).collect(Collectors.toSet()));
         userRepository.save(user);
         return user;
     }

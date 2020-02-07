@@ -3,6 +3,8 @@ package com.example.helloblog.service;
 import com.example.helloblog.entity.Message;
 import com.example.helloblog.repository.MessageRepository;
 import com.example.helloblog.repository.UserRepository;
+import com.example.helloblog.security.SecurityUtils;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,11 +55,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void save(Message message) {
-        UserDetails user = userDetailsService.getCurrentUser();
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User is unauthorized.");
-        }
-        message.setUser(userRepository.findByUsername(user.getUsername()));
+        String username = SecurityUtils.getCurrentUsername();
+        message.setUser(userRepository.findByUsername(username));
         messageRepository.save(message);
     }
 

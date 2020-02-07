@@ -1,5 +1,6 @@
 package com.example.helloblog.service;
 
+import com.example.helloblog.dto.RolesDto;
 import com.example.helloblog.dto.UserDto;
 import com.example.helloblog.entity.User;
 import org.springframework.stereotype.Service;
@@ -20,4 +21,6 @@ public interface UserService {
     void deleteById(int userId);
 
     User update(User user, UserDto userDto);
+
+    User updateRoles(User user, RolesDto rolesDto);
 }
