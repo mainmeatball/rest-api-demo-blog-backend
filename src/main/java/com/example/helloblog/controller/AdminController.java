@@ -1,5 +1,6 @@
 package com.example.helloblog.controller;
 
+import com.example.helloblog.dto.RolesDto;
 import com.example.helloblog.dto.UserDto;
 import com.example.helloblog.entity.Message;
 import com.example.helloblog.entity.User;
@@ -13,28 +14,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserDetailsServiceImpl userDetailsService;
     private UserService userService;
     private MessageService messageService;
 
     @Autowired
-    public AdminController(UserDetailsServiceImpl userDetailsService, UserService userService, MessageService messageService) {
-        this.userDetailsService = userDetailsService;
+    public AdminController(UserService userService, MessageService messageService) {
         this.userService = userService;
         this.messageService = messageService;
     }
 
     @GetMapping("/users")
     public List<User> showUsers(@RequestParam(defaultValue = "0") int pageNo,
-                     @RequestParam(defaultValue = "100") int pageSize,
-                     @RequestParam(defaultValue = "id") String sortBy,
-                     @RequestParam(defaultValue = "asc") String dir) {
+                                @RequestParam(defaultValue = "100") int pageSize,
+                                @RequestParam(defaultValue = "id") String sortBy,
+                                @RequestParam(defaultValue = "asc") String dir) {
         return userService.findAll(pageNo, pageSize, sortBy, dir);
     }
 
@@ -44,9 +44,15 @@ public class AdminController {
     }
 
     @PutMapping("/users/{userId}")
-    public User updateUser(@PathVariable int userId, @RequestBody UserDto userdto) {
+    public User updateUser(@PathVariable int userId, @RequestBody UserDto userDto) {
         User user = userService.findById(userId);
-        return userService.update(user, userdto);
+        return userService.update(user, userDto);
+    }
+
+    @PutMapping("/users/{userId}/roles")
+    public User updateUserRoles(@PathVariable int userId, @Valid @RequestBody RolesDto rolesDto) {
+        User user = userService.findById(userId);
+        return userService.updateRoles(user, rolesDto);
     }
 
     @DeleteMapping("/users/{userId}")
@@ -67,11 +73,5 @@ public class AdminController {
         }
         messageService.deleteById(messageId);
         return ResponseEntity.ok("Message with id " + messageId + " was successfully deleted.");
-    }
-
-    // just for a test check which user is logged in
-    @GetMapping("/who_am_i")
-    public UserDetails whoAmI() {
-        return userDetailsService.getCurrentUser();
     }
 }
