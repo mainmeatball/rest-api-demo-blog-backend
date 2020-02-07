@@ -1,6 +1,7 @@
 package com.example.helloblog.controller;
 
 import com.example.helloblog.entity.Message;
+import com.example.helloblog.security.SecurityUtils;
 import com.example.helloblog.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,8 +53,8 @@ public class MessageController {
     @DeleteMapping("/messages/{messageId}")
     public ResponseEntity<String> deleteMessage(@PathVariable int messageId) {
         Message message = messageService.findById(messageId);
-        if (message == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message with id " + messageId + " is not found.");
+        if (!SecurityUtils.getCurrentUsername().equals(message.getUser().getUsername())) {
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Message with id " + messageId + " was not published by that user.");
         }
         messageService.deleteById(messageId);
         return ResponseEntity.ok("Message with id " + messageId + " was successfully deleted.");
