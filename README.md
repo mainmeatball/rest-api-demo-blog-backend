@@ -16,13 +16,13 @@ This demo is build with with Maven 4.0.0 and Java 8.
 ## Usage
 For now you can start the application with the Spring Boot maven plugin (`mvn spring-boot:run`). The application is
 running at [http://localhost:8080](http://localhost:8080).
-While I'm creating the frontend part of the demo project, you can use **[Postman](https://www.postman.com)** to make some API queries and get the information.
+While I'm creating the frontend part of the demo project, you can use [Postman](https://www.postman.com) to make some API queries and get the information.
 
 ## Frontend
 In progress
 
 ## Backend
-The authorization is performed using **[Spring Security](https://spring.io/projects/spring-security)**'s STATEless approach. It was accomplished due to **[JWT](https://jwt.io)** and removing all dependencies from the Application State.
+The authorization is performed using [Spring Security](https://spring.io/projects/spring-security)'s STATEless approach. It was accomplished due to [JWT](https://jwt.io) and removing all dependencies from the Application State.
 There are four User Roles with certain Privileges to demonstrate the different levels of access to the endpoints in the API and the different authorization exceptions. Roles hierarchy looks like this: 
 * `ROLE_ADMIN`
 * `ROLE_MODERATOR`
