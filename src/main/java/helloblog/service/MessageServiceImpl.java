@@ -1,17 +1,12 @@
-package com.example.helloblog.service;
+package helloblog.service;
 
-import com.example.helloblog.entity.Message;
-import com.example.helloblog.repository.MessageRepository;
-import com.example.helloblog.repository.UserRepository;
-import com.example.helloblog.security.SecurityUtils;
-import org.apache.catalina.security.SecurityUtil;
+import helloblog.entity.Message;
+import helloblog.repository.MessageRepository;
+import helloblog.repository.UserRepository;
+import helloblog.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,13 +18,11 @@ public class MessageServiceImpl implements MessageService {
 
     private MessageRepository messageRepository;
     private UserRepository userRepository;
-    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository, UserDetailsServiceImpl userDetailsService) {
+    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
-        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -37,6 +30,19 @@ public class MessageServiceImpl implements MessageService {
         Sort sort = dir.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable paging = PageRequest.of(pageNo, pageSize, sort);
         Page<Message> pagedResult = messageRepository.findAll(paging);
+        if (pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Message> findByUsername(String username, int pageNo, int pageSize, String sortBy, String dir) {
+        Sort sort = dir.equals("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+        List<Message> messages = messageRepository.findByUser_Username(username);
+        Page<Message> pagedResult = new PageImpl<>(messages, paging, messages.size());
         if (pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {

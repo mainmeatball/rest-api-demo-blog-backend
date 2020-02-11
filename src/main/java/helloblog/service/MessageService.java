@@ -1,6 +1,6 @@
-package com.example.helloblog.service;
+package helloblog.service;
 
-import com.example.helloblog.entity.Message;
+import helloblog.entity.Message;
 
 import java.util.List;
 
@@ -13,4 +13,6 @@ public interface MessageService {
     void save(Message message);
 
     void deleteById(int id);
+
+    List<Message> findByUsername(String username, int pageNo, int pageSize, String sortBy, String dir);
 }
