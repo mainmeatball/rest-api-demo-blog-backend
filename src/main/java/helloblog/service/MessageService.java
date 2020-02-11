@@ -15,4 +15,6 @@ public interface MessageService {
     void deleteById(int id);
 
     List<Message> findByUsername(String username, int pageNo, int pageSize, String sortBy, String dir);
+
+    Message update(Message message, String context);
 }

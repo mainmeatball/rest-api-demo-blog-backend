@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,11 +64,19 @@ public class MessageServiceImpl implements MessageService {
     public void save(Message message) {
         String username = SecurityUtils.getCurrentUsername();
         message.setUser(userRepository.findByUsername(username));
+        message.setLocalDateTime(LocalDateTime.now());
         messageRepository.save(message);
     }
 
     @Override
     public void deleteById(int id) {
         messageRepository.deleteById(id);
+    }
+
+    @Override
+    public Message update(Message message, String content) {
+        message.setContent(content);
+        messageRepository.save(message);
+        return message;
     }
 }
