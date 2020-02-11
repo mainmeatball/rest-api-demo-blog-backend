@@ -1,12 +1,11 @@
-package com.example.helloblog.controller;
+package helloblog.controller;
 
-import com.example.helloblog.controller.validator.UsernameValidator;
-import com.example.helloblog.security.config.jwt.JwtFilter;
-import com.example.helloblog.security.config.jwt.TokenProvider;
-import com.example.helloblog.dto.UserDto;
-import com.example.helloblog.entity.User;
-import com.example.helloblog.security.SecurityUtils;
-import com.example.helloblog.service.UserService;
+import helloblog.security.jwt.JwtFilter;
+import helloblog.security.jwt.TokenProvider;
+import helloblog.dto.UserDto;
+import helloblog.entity.User;
+import helloblog.security.SecurityUtils;
+import helloblog.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +38,9 @@ public class AuthenticationController {
 
     @PostMapping("/sign_up")
     public User signUp(@Valid @RequestBody UserDto userDto) {
+        if (userService.findByUsername(userDto.getUsername()) != null) {
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This username was already used.");
+        }
         return userService.save(userDto);
     }
 
