@@ -1,4 +1,4 @@
-package com.example.helloblog.util;
+package helloblog.util;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.ObjectMapper;

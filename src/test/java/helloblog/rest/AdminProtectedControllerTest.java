@@ -1,11 +1,11 @@
-package com.example.helloblog.rest;
+package helloblog.rest;
 
+import helloblog.util.AbstractControllerTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import com.example.helloblog.util.AbstractControllerTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static com.example.helloblog.util.LoginUtils.getTokenForLogin;
+import static helloblog.util.LoginUtils.getTokenForLogin;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AdminProtectedControllerTest extends AbstractControllerTest {
@@ -28,11 +28,7 @@ public class AdminProtectedControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
-                .andExpect(content().json(
-                        "{\n" +
-                                "  \"username\" : \"a\"\n" +
-                                "}"
-                ));
+                .andExpect(content().json("{}"));
     }
 
     @Test

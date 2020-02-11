@@ -1,6 +1,6 @@
-package com.example.helloblog.security.rest;
+package helloblog.security;
 
-import com.example.helloblog.util.AbstractControllerTest;
+import helloblog.util.AbstractControllerTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 

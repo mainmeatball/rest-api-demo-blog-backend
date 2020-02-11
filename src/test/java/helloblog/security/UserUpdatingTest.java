@@ -1,10 +1,10 @@
-package com.example.helloblog.security.rest;
+package helloblog.security;
 
-import com.example.helloblog.util.AbstractControllerTest;
+import helloblog.util.AbstractControllerTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import static com.example.helloblog.util.LoginUtils.getTokenForLogin;
+import static helloblog.util.LoginUtils.getTokenForLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

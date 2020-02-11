@@ -1,4 +1,4 @@
-package com.example.helloblog.util;
+package helloblog.util;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
