@@ -1,9 +1,13 @@
-package com.example.helloblog.repository;
+package helloblog.repository;
 
-import com.example.helloblog.entity.Message;
+import helloblog.entity.Message;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MessageRepository extends PagingAndSortingRepository<Message, Integer> {
+
+    List<Message> findByUser_Username(String username);
 }

@@ -29,14 +29,13 @@ There are four User Roles with certain Privileges to demonstrate the different l
 * `ROLE_USER`
 * `ROLE_DISABLED`
 
-##API
-
+###API
 No JWT token needed in the request header for next endpoints
 ```
 POST    /sign_up  - registration endpoint
 POST    /login    - authentication endpoint
 ```
-A valid JWT token of a user with 'ROLE_ADMIN' must be present in the request header for next endpoints
+A valid JWT token of a user with `ROLE_ADMIN` must be present in the request header for next endpoints
 ```
 GET     /admin/users            - returns detail information for all users
 GET     /admin/users/:id        - returns detail information for user with id=:id
@@ -45,7 +44,7 @@ DELETE  /admin/users/:id        - deletes user with id=:id
 PUT     /admin/users/:id/roles  - updates roles of user with id=:id
 DELETE  /admin/messages/:id     - deletes message with id=:id 
 ```
-A valid JWT token of a user with 'ROLE_USER' must be present in the request header for next endpoints
+A valid JWT token of a user with `ROLE_USER` must be present in the request header for next endpoints
 ```
 GET     /messages               - returns all messages
 GET     /messages/:id           - returns message with id=:id
