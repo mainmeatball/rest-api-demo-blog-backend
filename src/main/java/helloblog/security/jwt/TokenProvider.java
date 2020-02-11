@@ -1,4 +1,4 @@
-package com.example.helloblog.security.config.jwt;
+package helloblog.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -23,13 +23,9 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
-
     private static final String AUTHORITIES_KEY = "auth";
-
     private final String base64Secret;
-
     private Key key;
-
 
     public TokenProvider(
             @Value("${jwt.base64-secret}") String base64Secret) {

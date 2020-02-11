@@ -1,9 +1,11 @@
-package com.example.helloblog.entity;
+package helloblog.entity;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+// TODO: add tags
 
 @Entity(name="messages")
 public class Message {
@@ -35,47 +37,36 @@ public class Message {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
     }
-
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
     }
-
     public String getContent() {
         return content;
     }
-
     public void setContent(String text) {
         this.content = text;
     }
-
     public int getLikes() {
         return likes;
     }
-
     public void setLikes(int likes) {
         this.likes = likes;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
     public void upvote() {
         this.likes++;
     }
-
     public void downvote() {
         this.likes--;
     }

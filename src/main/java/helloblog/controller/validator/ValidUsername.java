@@ -1,4 +1,4 @@
-package com.example.helloblog.controller.validator;
+package helloblog.controller.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

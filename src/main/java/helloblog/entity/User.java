@@ -1,11 +1,9 @@
-package com.example.helloblog.entity;
+package helloblog.entity;
 
-import com.example.helloblog.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity(name="users")
@@ -18,12 +16,10 @@ public class User {
 
     @Column(unique = true)
     @NotNull
-//    @Size(min = 6, max = 20)
     private String username;
 
     @JsonIgnore
     @NotNull
-//    @Size(min = 6, max = 20)
     private String password;
 
     @ManyToMany

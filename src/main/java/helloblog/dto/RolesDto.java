@@ -1,6 +1,6 @@
-package com.example.helloblog.dto;
+package helloblog.dto;
 
-import com.example.helloblog.controller.validator.ValidRoles;
+import helloblog.controller.validator.ValidRoles;
 
 import java.util.Set;
 

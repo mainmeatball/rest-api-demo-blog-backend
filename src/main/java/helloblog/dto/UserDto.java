@@ -1,7 +1,7 @@
-package com.example.helloblog.dto;
+package helloblog.dto;
 
-import com.example.helloblog.controller.validator.ValidPassword;
-import com.example.helloblog.controller.validator.ValidUsername;
+import helloblog.controller.validator.ValidPassword;
+import helloblog.controller.validator.ValidUsername;
 
 public class UserDto {
 

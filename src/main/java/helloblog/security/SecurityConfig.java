@@ -1,8 +1,7 @@
-package com.example.helloblog.security.config;
+package helloblog.security;
 
-import com.example.helloblog.security.UnauthorizedEntryPoint;
-import com.example.helloblog.security.config.jwt.JwtConfigurer;
-import com.example.helloblog.security.config.jwt.TokenProvider;
+import helloblog.security.jwt.JwtConfigurer;
+import helloblog.security.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.unauthorizedEntryPoint = unauthorizedEntryPoint;
     }
 
+    // TODO: messages should not be restricted for anonymous user
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -42,9 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/login", "/sign_up").permitAll()
-                .antMatchers("/", "/messages/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/login", "/sign_up", "/messages/*").permitAll()
+                .antMatchers("/messages/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .exceptionHandling()

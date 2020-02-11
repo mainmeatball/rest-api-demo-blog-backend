@@ -1,4 +1,4 @@
-package com.example.helloblog.security;
+package helloblog.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

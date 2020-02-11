@@ -1,6 +1,6 @@
-package com.example.helloblog.repository;
+package helloblog.repository;
 
-import com.example.helloblog.entity.Role;
+import helloblog.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

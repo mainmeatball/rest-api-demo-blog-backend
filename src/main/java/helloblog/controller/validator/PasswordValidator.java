@@ -1,4 +1,4 @@
-package com.example.helloblog.controller.validator;
+package helloblog.controller.validator;
 
 import org.springframework.stereotype.Service;
 

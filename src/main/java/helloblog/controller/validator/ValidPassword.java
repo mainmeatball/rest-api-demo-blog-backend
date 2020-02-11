@@ -1,4 +1,4 @@
-package com.example.helloblog.controller.validator;
+package helloblog.controller.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -6,10 +6,10 @@ import java.lang.annotation.*;
 
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = RolesValidator.class)
+@Constraint(validatedBy = PasswordValidator.class)
 @Documented
-public @interface ValidRoles {
-    String message() default "Invalid roles";
+public @interface ValidPassword {
+    String message() default "Invalid password";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

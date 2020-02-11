@@ -1,4 +1,4 @@
-package com.example.helloblog.entity;
+package helloblog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

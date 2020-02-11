@@ -1,6 +1,6 @@
-package com.example.helloblog.repository;
+package helloblog.repository;
 
-import com.example.helloblog.entity.User;
+import helloblog.entity.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
