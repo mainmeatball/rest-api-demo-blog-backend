@@ -1,8 +1,8 @@
-package com.example.helloblog.controller;
+package helloblog.controller;
 
-import com.example.helloblog.entity.Message;
-import com.example.helloblog.security.SecurityUtils;
-import com.example.helloblog.service.MessageService;
+import helloblog.entity.Message;
+import helloblog.security.SecurityUtils;
+import helloblog.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping(value={"/", "/messages"})
+    @GetMapping(value={"/messages"})
     public List<Message> show(@RequestParam(defaultValue = "0") int pageNo,
                               @RequestParam(defaultValue = "100") int pageSize,
                               @RequestParam(defaultValue = "id") String sortBy,
