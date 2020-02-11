@@ -33,24 +33,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.unauthorizedEntryPoint = unauthorizedEntryPoint;
     }
 
-    // TODO: messages should not be restricted for anonymous user
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()
+
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-            .csrf().disable()
+
             .authorizeRequests()
-                .antMatchers("/login", "/sign_up", "/messages/*").permitAll()
+                .antMatchers("/login", "/sign_up", "/messages", "/who").permitAll()
                 .antMatchers("/messages/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
+
             .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedEntryPoint)
                 .and()
+
             .apply(securityConfigurerAdapter());
     }
 

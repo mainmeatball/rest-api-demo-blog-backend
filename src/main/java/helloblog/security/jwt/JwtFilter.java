@@ -1,5 +1,6 @@
 package helloblog.security.jwt;
 
+import helloblog.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -22,8 +23,6 @@ public class JwtFilter extends GenericFilterBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtFilter.class);
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
-
     private TokenProvider tokenProvider;
 
     public JwtFilter(TokenProvider tokenProvider) {
@@ -34,7 +33,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = resolveToken(httpServletRequest);
+        String jwt = SecurityUtils.resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
@@ -48,11 +47,4 @@ public class JwtFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 }
