@@ -1,8 +1,8 @@
-package com.example.helloblog.service;
+package helloblog.service;
 
-import com.example.helloblog.dto.RolesDto;
-import com.example.helloblog.dto.UserDto;
-import com.example.helloblog.entity.User;
+import helloblog.dto.RolesDto;
+import helloblog.dto.UserDto;
+import helloblog.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,4 +23,8 @@ public interface UserService {
     User update(User user, UserDto userDto);
 
     User updateRoles(User user, RolesDto rolesDto);
+
+    User block(User user);
+
+    User unblock(User user);
 }

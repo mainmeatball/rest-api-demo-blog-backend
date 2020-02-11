@@ -1,11 +1,11 @@
-package com.example.helloblog.service;
+package helloblog.service;
 
-import com.example.helloblog.dto.RolesDto;
-import com.example.helloblog.dto.UserDto;
-import com.example.helloblog.entity.Role;
-import com.example.helloblog.entity.User;
-import com.example.helloblog.repository.RoleRepository;
-import com.example.helloblog.repository.UserRepository;
+import helloblog.dto.RolesDto;
+import helloblog.dto.UserDto;
+import helloblog.entity.Role;
+import helloblog.entity.User;
+import helloblog.repository.RoleRepository;
+import helloblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +27,9 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -62,10 +64,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserDto userDto) {
         Set<Role> roles = new HashSet<>();
-        if (userDto.getUsername().equals("admin")) {
-            roles.add(roleRepository.findByName("ROLE_ADMIN"));
+        switch (userDto.getUsername()) {
+            case "admin":
+                roles.add(roleRepository.findByName("ROLE_ADMIN"));
+                roles.add(roleRepository.findByName("ROLE_MODERATOR"));
+                roles.add(roleRepository.findByName("ROLE_USER"));
+                break;
+            case "moderator":
+                roles.add(roleRepository.findByName("ROLE_MODERATOR"));
+                roles.add(roleRepository.findByName("ROLE_USER"));
+                break;
+            case "disabled":
+                roles.add(roleRepository.findByName("ROLE_DISABLED"));
+                break;
+            default:
+                roles.add(roleRepository.findByName("ROLE_USER"));
+                break;
         }
-        roles.add(roleRepository.findByName("ROLE_USER"));
         User user = new User(userDto.getUsername(),
                 passwordEncoder.encode(userDto.getPassword()),
                 roles);
@@ -91,5 +106,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User block(User user) {
+        user.setRoles(new HashSet<>(Collections.singleton(roleRepository.findByName("ROLE_DISABLED"))));
+        return user;
+    }
+
+    @Override
+    public User unblock(User user) {
+        user.setRoles(new HashSet<>(Collections.singleton(roleRepository.findByName("ROLE_USER"))));
+        return user;
     }
 }
