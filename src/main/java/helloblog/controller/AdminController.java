@@ -1,16 +1,14 @@
-package com.example.helloblog.controller;
+package helloblog.controller;
 
-import com.example.helloblog.dto.RolesDto;
-import com.example.helloblog.dto.UserDto;
-import com.example.helloblog.entity.Message;
-import com.example.helloblog.entity.User;
-import com.example.helloblog.service.MessageService;
-import com.example.helloblog.service.UserDetailsServiceImpl;
-import com.example.helloblog.service.UserService;
+import helloblog.dto.RolesDto;
+import helloblog.dto.UserDto;
+import helloblog.entity.Message;
+import helloblog.entity.User;
+import helloblog.service.MessageService;
+import helloblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,6 +27,8 @@ public class AdminController {
         this.userService = userService;
         this.messageService = messageService;
     }
+
+    // TODO: add @Secure annotation to restrict access to some endpoints
 
     @GetMapping("/users")
     public List<User> showUsers(@RequestParam(defaultValue = "0") int pageNo,
@@ -49,10 +49,18 @@ public class AdminController {
         return userService.update(user, userDto);
     }
 
-    @PutMapping("/users/{userId}/roles")
-    public User updateUserRoles(@PathVariable int userId, @Valid @RequestBody RolesDto rolesDto) {
+    @PostMapping("/users/{userId}/block")
+    public User blockUser(@PathVariable int userId) {
         User user = userService.findById(userId);
-        return userService.updateRoles(user, rolesDto);
+        userService.block(user);
+        return user;
+    }
+
+    @PostMapping("/users/{userId}/unblock")
+    public User unblockUser(@PathVariable int userId) {
+        User user = userService.findById(userId);
+        userService.unblock(user);
+        return user;
     }
 
     @DeleteMapping("/users/{userId}")
@@ -63,6 +71,12 @@ public class AdminController {
         }
         userService.deleteById(userId);
         return ResponseEntity.ok("User with id " + userId + " was successfully deleted.");
+    }
+
+    @PutMapping("/users/{userId}/roles")
+    public User updateUserRoles(@PathVariable int userId, @Valid @RequestBody RolesDto rolesDto) {
+        User user = userService.findById(userId);
+        return userService.updateRoles(user, rolesDto);
     }
 
     @DeleteMapping("/messages/{messageId}")
