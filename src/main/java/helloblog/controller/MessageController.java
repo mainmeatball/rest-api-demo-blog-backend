@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class MessageController {
@@ -22,16 +23,15 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    @CrossOrigin
     @GetMapping("/messages")
     public List<Message> showMessages(@RequestParam(defaultValue = "") String username,
+                                      @RequestParam(defaultValue = "") Set<String> tags,
                                       @RequestParam(defaultValue = "0") int pageNo,
                                       @RequestParam(defaultValue = "100") int pageSize,
                                       @RequestParam(defaultValue = "id") String sortBy,
                                       @RequestParam(defaultValue = "asc") String dir) {
-        if (!username.isEmpty()) {
-            return messageService.findByUsername(username, pageNo, pageSize, sortBy, dir);
-        }
-        return messageService.findAll(pageNo, pageSize, sortBy, dir);
+        return messageService.findAll(username, tags, pageNo, pageSize, sortBy, dir);
     }
 
     @GetMapping("/messages/{messageId}")

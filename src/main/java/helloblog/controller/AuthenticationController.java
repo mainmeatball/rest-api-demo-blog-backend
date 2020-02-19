@@ -1,6 +1,5 @@
 package helloblog.controller;
 
-import helloblog.security.jwt.JwtFilter;
 import helloblog.security.jwt.TokenProvider;
 import helloblog.dto.UserDto;
 import helloblog.entity.User;

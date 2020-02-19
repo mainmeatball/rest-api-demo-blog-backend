@@ -30,8 +30,6 @@ public class AdminController {
         this.messageService = messageService;
     }
 
-    // TODO: add @Secure annotation to restrict access to some endpoints
-
     @GetMapping("/users")
     public List<User> showUsers(@RequestParam(defaultValue = "0") int pageNo,
                                 @RequestParam(defaultValue = "100") int pageSize,
