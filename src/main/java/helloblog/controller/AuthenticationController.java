@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
+@CrossOrigin
 @RestController
 public class AuthenticationController {
 

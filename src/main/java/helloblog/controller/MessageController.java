@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin
 @RestController
 public class MessageController {
 
@@ -23,10 +24,9 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @CrossOrigin
     @GetMapping("/messages")
-    public List<Message> showMessages(@RequestParam(defaultValue = "") String username,
-                                      @RequestParam(defaultValue = "") Set<String> tags,
+    public List<Message> showMessages(@RequestParam(required = false) String username,
+                                      @RequestParam(required = false) Set<String> tags,
                                       @RequestParam(defaultValue = "0") int pageNo,
                                       @RequestParam(defaultValue = "100") int pageSize,
                                       @RequestParam(defaultValue = "id") String sortBy,
