@@ -34,16 +34,38 @@ No JWT token needed in the request header for next endpoints
 ```
 POST    /sign_up  - registration endpoint
 
+    SEND
+
+    {
+        "username": "username",
+        "password": "password"
+    }
+    
+    RETURN
+
+    {
+        "id": 1,
+        "username": "username",
+        "roles": [
+            {
+                "name": "ROLE_USER"
+            }
+        ]
+    }
+
+POST    /login    - authentication endpoint
+
+    SEND
+
     {
         "username": "...",
         "password": "..."
     }
 
-POST    /login    - authentication endpoint
+    RETURN
 
     {
-        "username": "...",
-        "password": "..."
+        "id_token": "eyJhbGciOiJ...jLhoHg"
     }
 ```
 A valid JWT token of a user with `ROLE_ADMIN` must be present in the request header for next endpoints
