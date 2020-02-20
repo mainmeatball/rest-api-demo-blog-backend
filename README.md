@@ -29,11 +29,22 @@ There are four User Roles with certain Privileges to demonstrate the different l
 * `ROLE_USER`
 * `ROLE_DISABLED`
 
-###API
+### API
 No JWT token needed in the request header for next endpoints
 ```
 POST    /sign_up  - registration endpoint
+
+    {
+        "username": "...",
+        "password": "..."
+    }
+
 POST    /login    - authentication endpoint
+
+    {
+        "username": "...",
+        "password": "..."
+    }
 ```
 A valid JWT token of a user with `ROLE_ADMIN` must be present in the request header for next endpoints
 ```
