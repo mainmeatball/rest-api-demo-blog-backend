@@ -30,44 +30,9 @@ There are four User Roles with certain Privileges to demonstrate the different l
 * `ROLE_DISABLED`
 
 ### API
-No JWT token needed in the request header for next endpoints
-```
-POST    /sign_up  - registration endpoint
 
-    SEND
+API was developed using [Swagger](https://app.swaggerhub.com/apis/mainmeatball/demo-blog/1.0.0#/).
 
-    {
-        "username": "username",
-        "password": "password"
-    }
-    
-    RETURN
-
-    {
-        "id": 1,
-        "username": "username",
-        "roles": [
-            {
-                "name": "ROLE_USER"
-            }
-        ]
-    }
-
-POST    /login    - authentication endpoint
-
-    SEND
-
-    {
-        "username": "...",
-        "password": "..."
-    }
-
-    RETURN
-
-    {
-        "id_token": "eyJhbGciOiJ...jLhoHg"
-    }
-```
 A valid JWT token of a user with `ROLE_ADMIN` must be present in the request header for next endpoints
 ```
 GET     /admin/users            - returns detail information for all users
@@ -76,16 +41,6 @@ PUT     /admin/users/:id        - updates information on user with id=:id
 DELETE  /admin/users/:id        - deletes user with id=:id
 PUT     /admin/users/:id/roles  - updates roles of user with id=:id
 DELETE  /admin/messages/:id     - deletes message with id=:id 
-```
-A valid JWT token of a user with `ROLE_USER` must be present in the request header for next endpoints
-```
-GET     /messages               - returns all messages
-GET     /messages/:id           - returns message with id=:id
-POST    /messages/:id           - adds new message in the database
-PUT     /messages               - updates message in the database
-DELETE  /messages/:id           - deletes message with id=:id
-PUT     /messages/:id/upvote    - adds 1 rating to message with id=:id
-PUT     /messages/:id/downvote  - subtracts 1 rating from message with id=:id 
 ```
 
 ### Generating password hashes for new users
