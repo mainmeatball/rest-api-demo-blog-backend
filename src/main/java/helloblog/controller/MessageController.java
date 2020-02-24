@@ -27,8 +27,8 @@ public class MessageController {
     @GetMapping("/messages")
     public List<Message> showMessages(@RequestParam(required = false) String username,
                                       @RequestParam(required = false) Set<String> tags,
-                                      @RequestParam(defaultValue = "0") int pageNo,
                                       @RequestParam(defaultValue = "100") int pageSize,
+                                      @RequestParam(defaultValue = "0") int pageNo,
                                       @RequestParam(defaultValue = "id") String sortBy,
                                       @RequestParam(defaultValue = "asc") String dir) {
         return messageService.findAll(username, tags, pageNo, pageSize, sortBy, dir);
