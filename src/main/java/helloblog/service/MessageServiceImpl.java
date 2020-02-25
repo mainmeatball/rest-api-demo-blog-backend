@@ -77,4 +77,11 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.save(message);
         return message;
     }
+
+    @Override
+    public Message update(Message message, int likes) {
+        message.setLikes(likes);
+        messageRepository.save(message);
+        return message;
+    }
 }

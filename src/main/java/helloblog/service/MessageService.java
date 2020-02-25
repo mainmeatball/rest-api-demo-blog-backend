@@ -16,4 +16,6 @@ public interface MessageService {
     void deleteById(int id);
 
     Message update(Message message, String context);
+
+    Message update(Message message, int likes);
 }

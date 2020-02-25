@@ -70,7 +70,7 @@ public class MessageController {
             throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Message with id " + messageId + " was posted by another user.");
         }
         messageService.deleteById(messageId);
-        return ResponseEntity.ok("Message with id " + messageId + " was successfully deleted.");
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @Secured("USER")
@@ -78,7 +78,7 @@ public class MessageController {
     public Message upvoteMessage(@PathVariable int messageId) {
         Message message = messageService.findById(messageId);
         message.upvote();
-        messageService.save(message);
+        messageService.update(message, message.getLikes());
         return message;
     }
 
@@ -87,7 +87,7 @@ public class MessageController {
     public Message dwonvoteMessage(@PathVariable int messageId) {
         Message message = messageService.findById(messageId);
         message.downvote();
-        messageService.save(message);
+        messageService.update(message, message.getLikes());
         return message;
     }
 }
