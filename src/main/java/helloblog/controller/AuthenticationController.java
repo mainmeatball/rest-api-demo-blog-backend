@@ -39,11 +39,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign_up")
-    public User signUp(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<JWTToken> signUp(@Valid @RequestBody UserDto userDto) {
         if (userService.findByUsername(userDto.getUsername()) != null) {
             throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This username was already used.");
         }
-        return userService.save(userDto);
+        userService.save(userDto);
+        return authorize(userDto);
     }
 
     @PostMapping("/login")
